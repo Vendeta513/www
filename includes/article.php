@@ -48,7 +48,7 @@
     }
 
     if($published_at != '') {
-      $date_time = date_create_from_format('Y-m-d H:i:s', $published_at);
+      $date_time = date_create_from_format('Y-m-d H:i', str_replace('T', '', $published_at));
 
       if($date_time === false){
         $errors[] = "Invalid date and time.";
