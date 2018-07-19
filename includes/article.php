@@ -43,18 +43,16 @@
   {
     $errors = [];
 
-    if($title == '')
-    {
+    if($title == ''){
       $errors[] = "Title is required";
     }
 
-    if($content == '')
-    {
+    if($content == ''){
       $errors[] = "Content is  required";
     }
 
     if($published_at != '') {
-      $date_time = date_create_from_format('m-d-Y h:i', $published_at);
+      $date_time = date_create_from_format('Y-m-d H:i:s', $published_at);
 
       if($date_time === false){
         $errors[] = "Invalid date and time.";
@@ -66,6 +64,6 @@
         }
       }
     }
-      return $errors;
+    return $errors;
   }
 ?>
