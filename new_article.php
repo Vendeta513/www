@@ -7,16 +7,14 @@
   $content = '';
   $published_at = '';
 
-  if($_SERVER["REQUEST_METHOD"] == "POST")
-  {
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $published_at = $_POST['published_at'];
 
     $errors = validateArticle($title, $content, $published_at);
 
-    if(empty($errors))
-    {
+    if(empty($errors)) {
 
       $conn = get_DB();
 
@@ -25,32 +23,25 @@
 
       $stmt = mysqli_prepare($conn, $sql);
 
-      if($stmt === false)
-      {
+      if($stmt === false) {
         echo mysqli_error($conn);
-      } else
-      {
-        if($published_at == '')
-        {
+      } else {
+        if($published_at == '') {
           $published_at = null;
         }
 
         mysqli_stmt_bind_param($stmt, "sss", $title, $content, $published_at);
 
-        if(mysqli_stmt_execute($stmt))
-        {
+        if(mysqli_stmt_execute($stmt)) {
           $id = mysqli_insert_id($conn);
-          if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off')
-          {
+          if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
             $protocol = 'https';
-          }else
-          {
+          }else {
             $protocol = 'http';
           }
           header("Location: $protocol://" . $_SERVER['HTTP_HOST'] . "/article.php?id=$id");
           exit;
-        }else
-        {
+        }else {
           echo mysqli_stmt_error($stmt);
         }
       }

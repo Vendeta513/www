@@ -15,14 +15,11 @@
 
     $stmt = mysqli_prepare($conn, $sql);
 
-    if($stmt === false)
-    {
+    if($stmt === false){
       echo mysqli_error($conn);
-    }else
-    {
+    }else {
       mysqli_stmt_bind_param($stmt, "i", $id);
-      if(mysqli_execute($stmt))
-      {
+      if(mysqli_execute($stmt)) {
         $result = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_array($result, MYSQLI_ASSOC);
       }
@@ -39,8 +36,7 @@
   *
   * return error if not supplied with any required param;
 */
-  function validateArticle($title, $content, $published_at)
-  {
+  function validateArticle($title, $content, $published_at) {
     $errors = [];
 
     if($title == ''){
