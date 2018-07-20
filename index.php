@@ -31,6 +31,7 @@
         <article>
           <h2><a href="article.php?id=<?= $article["id"]?>"><?= htmlspecialchars($article["title"]);?></a></h2>
           <p><?= htmlspecialchars($article["content"]);?></p>
+          <p>Posted: <?= htmlspecialchars($article["published_at"]); ?></p>
         </article>
       </li>
     <?php endforeach; ?>

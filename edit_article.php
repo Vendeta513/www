@@ -2,6 +2,7 @@
 
   require("includes/database.php");
   require("includes/article.php");
+  require("includes/url.php");
 
   $conn = get_DB();
 
@@ -46,13 +47,7 @@
         mysqli_stmt_bind_param($stmt, "sssi", $title, $content, $published_at, $id);
 
         if(mysqli_stmt_execute($stmt)) {
-          if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-            $protocol = 'https';
-          }else {
-            $protocol = 'http';
-          }
-          header("Location: $protocol://" . $_SERVER['HTTP_HOST'] . "/article.php?id=$id");
-          exit;
+          redirect("/article.php?id=$id");
         }else {
           echo mysqli_stmt_error($stmt);
         }
