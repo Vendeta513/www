@@ -25,6 +25,7 @@
               <p>Posted: <?= $article["published_at"];?></p>
           </article>
           <a href="edit_article.php?id=<?= $article['id']; ?>">Edit</a>
+          <a href="delete_article.php?id=<?= $article['id']; ?>">Delete</a>
       </li>
   </ul>
 <?php endif; ?>

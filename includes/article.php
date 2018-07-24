@@ -7,8 +7,8 @@
 *
 * @return mixed An associative array containing the article with that ID, or null if not found
 */
-  function getArticle($conn, $id) {
-    $sql = "SELECT *
+  function getArticle($conn, $id, $columns = '*') {
+    $sql = "SELECT $columns
             FROM article
             WHERE id = ?";
 
@@ -47,7 +47,7 @@
     }
 
     if($published_at != '') {
-      $date_time = date_create_from_format('Y-m-d H:i', str_replace('T', '', $published_at));
+      $date_time = date_create_from_format('Y-m-d H:i:s', $published_at);
 
       if($date_time === false){
         $errors[] = "Invalid date and time.";

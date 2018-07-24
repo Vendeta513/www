@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <title>My Blog</title>
-        <meta charset="utf-8">
-    </head>
+  <head>
+    <title>My Blog</title>
+    <meta charset="utf-8">
+  </head>
 
-    <body>
+  <body>
 
-        <h1>My  Blog</h1>
+    <h1>My  Blog</h1>
 
-            <main>
+      <main>
