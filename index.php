@@ -1,50 +1,49 @@
-<?php
-
-  require("includes/database.php");
-
-  session_start();
-
-  $conn = get_DB();
-
-  $sql =  "SELECT *
-           FROM article
-           ORDER BY published_at";
-
-   $results = mysqli_query($conn, $sql);
-
-    if ($results === false) {
-       echo mysqli_error($conn);
-    }else {
-       $articles = mysqli_fetch_all($results, MYSQLI_ASSOC);
-    }
-
-?>
+<?php require("includes/init.php");?>
 
 
-<?php require("includes/header.php");?>
 
-<?php if(isset($_SESSION['is_logged_in']) && $_SESSION['is_logged_in']): ?>
-  <p>You are logged-in. <a href="logout.php">Log out</a></p>
-<?php else: ?>
-  <p>You are not logged in. <a href="login.php">Log in</a></p>
-<?php endif; ?>
+<!doctype html>
+<html>
+<?php require("includes/header.php"); ?>
 
-<a href="new_article.php">Add New Article</a>
+  <?php
+    $conn = require("includes/db.php");
 
-<?php if(empty($articles)): ?>
-  <p>No articles found.</p>
-<?php else: ?>
-  <ul>
-    <?php foreach ($articles as $article): ?>
-      <li>
-        <article>
-          <h2><a href="article.php?id=<?= $article["id"]?>"><?= htmlspecialchars($article["title"]);?></a></h2>
-          <p><?= htmlspecialchars($article["content"]);?></p>
-          <p>Posted: <?= htmlspecialchars($article["published_at"]); ?></p>
-        </article>
-      </li>
-    <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
+    $paginator = new Paginator($_GET['page'] ?? 1, 3, Article::getTotal($conn, true));
 
-<?php require("includes/footer.php");?>
+    $articles = Article::getPage($conn, $paginator->limit, $paginator->offset, true);
+  ?>
+
+
+  <?php if(empty($articles)): ?>
+    <p>No articles found.</p>
+  <?php else: ?>
+    <ul id="index">
+      <?php foreach ($articles as $article): ?>
+        <li>
+          <article>
+            <h2><a href="article.php?id=<?= $article["id"]?>"><?= htmlspecialchars($article['title']);?></a></h2>
+            <time datetime="<?= $article['published_at']?>">
+              <?php
+                $datetime = new DateTime($article['published_at']);
+                echo $datetime->format('F j, Y');
+               ?>
+            </time>
+            <?php if($article['category_names']): ?>
+              <p>
+                Categories:
+                <?php foreach($article['category_names'] as $name): ?>
+                  <?= htmlspecialchars($name); ?>
+                <?php endforeach; ?>
+              </p>
+            <?php endif;?>
+            <p><?= htmlspecialchars($article['content']);?></p>
+           </article>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+    <?php require("includes/pagination.php")?>
+  <?php endif; ?>
+
+  <?php require("includes/footer.php"); ?>
+</html>

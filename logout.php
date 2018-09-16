@@ -1,5 +1,7 @@
 <?php
-  session_start();
+  require("includes/init.php");
 
-  $_SESSION['is_logged_in'] = false;
+  Auth::logout();
+
+  Url::redirect("/");
 ?>

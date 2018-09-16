@@ -1,12 +1,15 @@
 <?php
-  require('includes/url.php');
-  session_start();
+
+  require("includes/init.php");
+  $conn = require("includes/db.php");
 
   if($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if($_POST['name'] == "Keen" && $_POST['password'] == "secret") {
 
-      $_SESSION['is_logged_in'] = true;
-      redirect("/index.php");
+    if(User::authenticate($conn, $_POST['username'], $_POST['password'])) {
+
+      Auth::login();
+      Url::redirect("/");
+
     }else {
       $error = "incorrect log in.";
     }
@@ -22,16 +25,16 @@
 
 <h2>Log in</h2>
 <form method="post">
-  <div>
+  <div class="form-group">
     <label for="name">Name:</label>
-    <input type="text" name="name" id="name">
+    <input type="text" name="username" id="name" class="form-control">
   </div>
-  <div>
+  <div class="form-group">
     <label for="pass">Password:</label>
-    <input type="password" name="password" id="pass">
+    <input type="password" name="password" id="pass" class="form-control">
   </div>
-  <div>
-    <button>Log in</button>
-  </div>
+
+  <button class="btn btn-primary">Log in</button>
+
 </form>
 <?php require("includes/footer.php"); ?>
