@@ -242,7 +242,7 @@
         if($date_time === false){
           $this->errors[] = "Invalid date and time.";
         }else{
-          $date_errors[] = date_get_last_errors();
+          $date_errors = date_get_last_errors();
 
           if($date_errors['warning_count'] > 0){
             $this->errors[] = "Invalid date and time.";

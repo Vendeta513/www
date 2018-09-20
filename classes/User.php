@@ -20,6 +20,8 @@ class User
   */
   public $password;
 
+  public $errors = [];
+
 /*
 * validate the credential of the user from the database
 * @param $conn OBJECT, connection to the database;
@@ -52,5 +54,39 @@ class User
     $stmt = $conn->query($sql);
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
+  public function create($conn) {
+    if($this->validate()) {
+      $sql = "INSERT INTO user(username, password)
+              VALUES (:username, :password)";
+
+      $stmt = $conn->prepare($sql);
+
+      $stmt->bindValue(':username', $this->username, PDO::PARAM_STR);
+
+      $stmt->bindValue(':password', $this->password, PDO::PARAM_STR);
+
+      try {
+        $stmt->execute();
+        return true;
+      }catch(PDOException $e) {
+        if($e->errorInfo[1] == 1062) {
+          $this->errors[] = "Username is already in used";
+        }
+      }
+    }else {
+      return false;
+    }
+  }
+
+  protected function validate() {
+    if($this->username == '') {
+      $this->errors[] = "Username is required.";
+    }
+    if($this->password == '') {
+      $this->errors[] = "Password is required";
+    }
+    return empty($this->errors);
   }
 }

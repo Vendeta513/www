@@ -2,7 +2,6 @@
 * Improve client interactive experience and submit the data to the intended action.
 */
 
-
 $("a.delete").on("click", function(e) {
   e.preventDefault();
 
@@ -66,6 +65,17 @@ $("#formContact").validate({
       required: true
     },
     message: {
+      required: true
+    }
+  }
+});
+
+$("#signUp").validate({
+  rules: {
+    username: {
+      required: true
+    },
+    password: {
       required: true
     }
   }
